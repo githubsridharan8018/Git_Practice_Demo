@@ -1,0 +1,309 @@
+SQL -- SQL is structured query language
+       SQL is used to preform CRUD operations on database
+That is C for create
+        R for read
+		U for update
+		D for delete 
+		
+DATABASE ---- collection of data is called as DATABASE
+DBMS     ---- is abbrevated as DATABASE MANAGEMENT SYSTEM
+      1.Database management system is a software interface between DATABASE and END-USER
+	  2.It is responsible for authentication,logging,backup,optimization,concurrency etc.
+	  3.There are many types of database like 
+	      a)Relational
+		  b)Hierarchical
+		  c)Network 
+		  d)NoSQL etc.
+		  
+		  some of the examples of RDBMS--Relational Database management system are
+		  
+		- MySql – OpenSource
+        - SQL Server – Microsoft
+        - Oracle – IBM
+        - PostgreSQL - OpenSource
+		
+List of datatypes in MySQL are
+
+    1)Character data  ---- char and varchar
+	2)Text data       ---- Tinytext,Text,Mediumtext,Longtext
+	3)Numerical data  ---- (whole numbers)Tinyint,Smallint,Mediumint,Int,Bigint
+	                       (Decimal numbers) Float,Double
+	4)Temporal data   ---- Date,Datetime,Timestamp,Year,Time
+	
+1)Character data:
+    char - eg:char(5) stores fixed length string of length 5. Max 255 bytes. 
+	varchar - eg:varchar(5) stores variable length string of length 5. Max 65535 bytes.
+	
+	syntax :SHOW CHARACTER SET; -- shows various character sets that are supported.
+	
+2)Text data:  BLOB - Binary Large Object File → TinyBlob, Blob, MediumBlob, LongBlob
+
+-----------------------------------------------------------------------------------------
+List of Basic Queries are given below:
+
+DATABASE Queries: 
+
+-CREATE DATABASE SCHOOL; -- creates a new database
+
+TO DELETE A DATABASE
+
+-DROP DATABASE SCHOOL;
+-DROP SCHEMA SCHOOL; -- same as above. u can use DATABASE Or SCHEMA
+-DROP SCHEMA IF EXISTS SCHOOL; -- prevents error if db not found
+
+-SHOW DATABASES; -- shows all the databases
+-SHOW SCHEMAS; -- same as above. shows schemas/db
+
+-USE SYS; -- uses this database for all further commands
+-SHOW TABLES;-- shows all tables in the database being used
+------------------------------------------------------------------------------------------
+
+Table - Create,Delete,Alter : primary key - uniquely identifies a row in a table
+
+//creating a table
+CREATE TABLE student(
+	id INT PRIMARY KEY,
+    name VARCHAR(30),
+    gpa DECIMAL(3,2)
+);
+-- ----or-----
+CREATE TABLE student( 
+	id INT,
+    name VARCHAR(30),
+    gpa DECIMAL(3,2),
+    PRIMARY KEY(id)
+);
+
+DROP TABLE student; -- drops the table
+
+DESCRIBE student; -- describes the columns in the table student
+
+ALTER TABLE student ADD department VARCHAR(5); -- Adds a new column department to the student table
+
+ALTER TABLE student DROP COLUMN department; -- drops the department column from student table
+-- ---or---
+ALTER TABLE student DROP department; -- same as above
+
+------------------------------------------------------------------------------------------------------
+Inserting Data
+
+INSERT INTO student VALUES(1,"Aarthi",7.6);
+INSERT INTO student VALUES(2,"Anitha",8.5); -- inserts a row. give values in column order
+
+INSERT INTO student VALUES
+(3,"Anitha",8.5),
+(4,"Arul",8.2),
+(5,"Ashwin",7.6); -- inserts more than one row
+
+INSERT INTO student(id,name) VALUES(5,"Balaji"),(6,"Chandru"); -- inserts specific columns.
+
+------------------------------------------------------------------------------------------------
+Select:
+
+SELECT * FROM student; -- displays all rows and columns in the student table
+SELECT id,name FROM student; -- displays specific columns
+-------------------------------------------------------------------------------------------------
+Where Clause and Conditions:
+where is used to filter the records. The rows are filtered based on conditions. 
+
+- **Query for Employee table** (click the initial arrow to expand)
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+Following can be used within the condition:
+
+Equal to = 
+Greaterthan >
+Lessthan <	
+Greaterthan or equal to >=
+Lessthan or equal to  <=
+Notequal to !=
+BETWEEN --- between a certain range
+Like --- search for a pattern
+IN --- To specify multiple possible values for a column.
+NOT --- negation
+----------------------------------------------------------------------------------------------
+
+AND/OR can be used to combine the relational operators:
+
+SELECT * FROM employee
+WHERE ename = 'Ramya'; 
+
+SELECT emp_id,ename,salary FROM employee
+WHERE salary>2000000; 
+
+SELECT emp_id,ename,salary FROM employee
+WHERE salary<2600000 AND job_desc = 'MANAGER'; 
+
+SELECT * FROM employee
+WHERE job_desc='ADMIN' OR job_desc='HR'; -- though this works next command is a much better choice
+
+SELECT * FROM employee
+WHERE job_desc IN ('ADMIN','HR'); 
+
+SELECT * FROM employee
+WHERE job_desc NOT IN ('MANAGER','CEO');
+
+SELECT * FROM employee
+WHERE salary BETWEEN 2000000 AND 3000000
+LIMIT 5; --limits the records shown 
+
+SELECT * FROM employee
+LIMIT 5;  -- Different syntax in oracle/sql server
+
+---------------------------------------------------------------------------------------
+Update and Delete:
+
+UPDATE employee
+SET job_desc = "Analyst"; -- updates all job_desc of all rows to "Analyst" when safe update not enabled
+
+UPDATE employee
+SET job_desc = "Analyst"
+WHERE job_desc = "Engineer"; -- changes Engineer to Analyst in all applicable rows
+
+UPDATE employee
+SET job_desc = "Analyst"
+WHERE emp_id=1;
+
+DELETE FROM employee; -- deletes all rows
+
+DELETE from employee
+WHERE emp_id = 12;
+----------------------------------------------------------------------------------------------------------
+Distinct:
+
+SELECT DISTINCT job_desc
+FROM employee; -- shows only distinct values without duplicates
+-----------------------------------------------------------------------------------------
+
+Copy Table:
+
+INSERT INTO first_table_name [(column1, column2, ... columnN)] 
+   SELECT column1, column2, ...columnN 
+   FROM second_table_name
+------------------------------------------------------------------------------------
+FUNCTIONS:
+
+SELECT COUNT(*) FROM employee; -- total count of entries in the table
+
+SELECT AVG(salary) FROM employee; -- avg salary of all employees
+
+SELECT AVG(salary) 
+FROM employee
+WHERE job_desc="MANAGER"; -- avg salary of managers
+
+SELECT SUM(salary)
+FROM employee
+WHERE job_desc="ANALYST"; -- total salary given to all analysts
+
+SELECT * FROM employee
+WHERE salary = (SELECT MAX(salary)
+FROM employee);  -- display the employee with 
+
+SELECT MIN(salary) FROM employee;
+
+SELECT UCASE(ename),salary
+FROM employee; -- uppercase
+
+SELECT ename,CHAR_LENGTH(ename)
+FROM employee; 
+
+SELECT ename,CONCAT("Rs.",salary)
+FROM employee; -- adds Rs. to the beginning of salary
+
+SELECT ename,CONCAT("Rs.",FORMAT(salary,0))
+FROM employee; -- formats the number to add comma. The second argument(0 here) represents digits to round off after decimal
+
+SELECT ename,LEFT(job_desc,4)
+FROM employee; -- returns only the first 4 characters of the ename
+-----------------------------------------------------------------------------
+USING DATE:
+
+ALTER TABLE employee ADD COLUMN Hire_Date DATE; -- adding hire_date column
+
+
+UPDATE  employee
+SET Hire_Date="2012-10-05"; -- updating hire_date
+
+UPDATE  employee
+SET Hire_Date="2014-10-05"
+WHERE job_desc = "ANALYST"; -- updating hire_date
+
+SELECT NOW(); -- Current date and time 
+
+SELECT DATE(NOW()); -- current date
+
+SELECT CURDATE(); -- current system date
+
+SELECT DATE_FORMAT(CURDATE(),'%d/%m/%Y'); -- to change the display format. use %d %m and %y or %Y in required format.
+
+SELECT DATEDIFF(CURDATE(),'2020-01-01') DAYS; -- to calculate date difference
+
+--------------------------
+SELECT CURDATE() 'start date',
+ DATE_ADD(CURDATE(),INTERVAL 1 DAY) 'one day later',
+ DATE_ADD(CURDATE(),INTERVAL 1 WEEK) 'one week later',
+ DATE_ADD(CURDATE(),INTERVAL 1 MONTH) 'one month later',x
+ DATE_ADD(CURDATE(),INTERVAL 1 YEAR) 'one year later';
+ 
+ -------------------------------------------------------------------------------
+ FOREIGN KEY :
+ 
+ Foreign key is a field in one table referring to the primary key of another table.
+ 
+ 
+-- drop previously created tables and create a branch table
+CREATE TABLE branch (
+branch_id INT PRIMARY KEY AUTO_INCREMENT,
+br_name VARCHAR(30) NOT NULL,
+addr VARCHAR(200) );
+
+-- create employee table with branch_id as foreign key. It refers to the branch_id of branch table.
+CREATE TABLE employee (
+emp_id INT PRIMARY KEY,
+ename VARCHAR(30),
+job_desc VARCHAR(20),
+salary INT,
+branch_id INT,
+CONSTRAINT FK_branchId FOREIGN KEY(branch_id) REFERENCES branch(branch_id));
+
+-- droping FK
+ALTER TABLE employee
+DROP FOREIGN KEY FK_branchId;
+------------------------------------------------------------------------
+
+
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+   
+ 
+ 
+      
+	  
+	
+	
+	
+	
+
+		
+		  
+		  
+
+
+
+

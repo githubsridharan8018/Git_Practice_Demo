@@ -1,0 +1,28 @@
+driver.manage().timeouts().implicilyWait(Duration.ofSeconds(10));  ---implicit(selenium 4)
+
+
+driver.manage().timeouts().implicilyWait(10,TimeUnit.seconds);  ---implicit(selenium 3)
+
+
+
+explicitWait Syntax
+
+
+
+WebDriverWait wait = new WebDriverWait,Duration.ofSeconds(10));wait.until(ExpectedConditions.alertIsPresent());
+
+
+
+
+pageload timeout
+
+
+
+driver.manade().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
+
+
+
+FluentWait :
+
+Wait<webdriver> refname = new FluentWait<webdriver>(driver).withTimeout(Duration.ofSeconds(30)).pollingEvery(Duration.ofSeconds(5)).ignoring(NoSuchElementException.class);
+
